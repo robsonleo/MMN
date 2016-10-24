@@ -1,0 +1,9 @@
+diff a/av.mmn/av.mmn.gui/View/Tables/UniversalTable/ColumnDescription.cs b/av.mmn/av.mmn.gui/View/Tables/UniversalTable/ColumnDescription.cs	(rejected hunks)
+@@ -51,6 +51,7 @@
+ 
+ 
+ 
++    
+     //public sealed class RowViewModel:IInitialize<Object>
+     //{
+     //    private Object _obj;

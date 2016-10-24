@@ -1,0 +1,229 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:ex="clr-namespace:GUI.XamlExtensions"
+                    xmlns:customControls="clr-namespace:GUI.UsersControls"
+                    mc:Ignorable="d"
+                    x:Class="GUI.Resources.Resources">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../../Resources/Xaml/ContextMenus.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Event Systems -->
+    <ex:Triggers x:Key="EventSystem" x:Shared="False" >
+        <i:EventTrigger EventName="LostFocus">
+            <i:InvokeCommandAction CommandName="LostFocus"/>
+        </i:EventTrigger>
+    </ex:Triggers>
+
+    <ex:Triggers x:Key="TabControlEventSystem">
+        <i:EventTrigger EventName="Drop">
+            <i:InvokeCommandAction CommandName="DropCommand" CommandParameter="{Binding}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Drag">
+            <i:InvokeCommandAction CommandName="DragCommand" CommandParameter="{Binding}"/>
+        </i:EventTrigger>
+    </ex:Triggers>
+
+    <FontFamily x:Key="DefaultFont">
+        /Ktc_Vvod;component/Resources/#PT Mono
+    </FontFamily>
+
+    <Style x:Key="Unfocusable" TargetType="Control">
+        <Setter Property="Focusable" Value="False"/>
+    </Style>
+
+    <!-- Стиль стандартного текста в шапке -->
+    <Style x:Key="DefaultHeaderLabelStyle" TargetType="{x:Type Control}">
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderThickness" Value="1.15"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    </Style>
+
+    <!-- Стиль повернутых набок полей в шапке -->
+    <Style x:Key="RotatedHeaderLabelStyle" TargetType="{x:Type Label}" BasedOn="{StaticResource DefaultHeaderLabelStyle}">
+        <Setter Property="RenderTransformOrigin" Value="0.0,0.0"/>
+        <Setter Property="LayoutTransform">
+            <Setter.Value>
+                <RotateTransform Angle="-90"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Стиль Текстовых полей в Шапке -->
+    <Style x:Key="TextDefaultStyle" TargetType="{x:Type customControls:ValidatedTextBox }" BasedOn="{StaticResource DefaultHeaderLabelStyle}">
+        <Setter Property="IsValid" Value="{Binding IsValid, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Setter Property="ex:SupplementaryInteraction.Triggers" Value="{StaticResource EventSystem}"/>
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip>
+                    <ToolTip.Template>
+                        <ControlTemplate>
+                            <Border BorderThickness="2" BorderBrush="Black" Background="Silver">
+                                <StackPanel Width="300" Orientation="Vertical" DataContext="{Binding ErrorInfo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <Label  FontSize="14"  FontWeight="Bold" HorizontalContentAlignment="Left">
+                                        <Label.Content>
+                                            <AccessText  TextWrapping="Wrap" Text ="{Binding ErrorName, Mode=OneTime, StringFormat={}Ошибка: {0}}"/>
+                                        </Label.Content>
+                                    </Label>
+                                    <Label   FontSize="14"  FontWeight="Bold"  HorizontalContentAlignment="Left">
+                                        <Label.Content>
+                                            <AccessText TextWrapping="Wrap" Text ="{Binding ErrorInfo, Mode=OneTime, StringFormat={}Описание: {0}}"/>
+                                        </Label.Content>
+                                    </Label>
+                                    <Label  FontSize="14"   FontWeight="Bold" HorizontalContentAlignment="Left">
+                                        <Label.Content>
+                                            <AccessText TextWrapping="Wrap"  Text ="{Binding ResolveInfo, Mode=OneTime, StringFormat={}Решение: {0}}"/>
+                                        </Label.Content>
+                                    </Label>
+                                </StackPanel>
+                            </Border>
+                        </ControlTemplate>
+                    </ToolTip.Template>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsValid, Mode=OneWay}" Value="{x:Null}">
+                <Setter Property="ToolTipService.IsEnabled" Value="false"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsValid, Mode=OneWay}" Value="true">
+                <Setter Property="ToolTipService.IsEnabled" Value="false"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsValid, Mode=OneWay}" Value="false">
+                <Setter Property="ToolTipService.IsEnabled" Value="true"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Стиль полей КТС и ЛИН-->
+    <Style x:Key="RowTextBoxStyle" TargetType="{x:Type customControls:ValidatedTextBox}" BasedOn="{StaticResource TextDefaultStyle}">
+        <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=RowContextMenu}"/>
+    </Style>
+
+    <!-- Стиль полей сборочного чережа  -->
+    <Style x:Key="AssemblyTextBoxStyle" TargetType="{x:Type customControls:ValidatedTextBox}" BasedOn="{StaticResource TextDefaultStyle}">
+        <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=AssemblyContextMenu}"/>
+    </Style>
+
+    <Style x:Key="ScrollBarLineButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Canvas Height="18">
+                        <Polygon Fill="LightBlue" Points="3,15 15,15 9,3"></Polygon>
+                    </Canvas>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ScrollBarLineButtonBottomStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Canvas Height="18">
+                        <Polygon Fill="LightBlue" Points="3,3 9,15 15,3"></Polygon>
+                    </Canvas>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ScrollBarPageButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border BorderBrush="Transparent"></Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Margin" Value="1,0,1,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Border
+          CornerRadius="2"
+          BorderBrush="Black"
+          BorderThickness="1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SettingNameTextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="/Ktc_Vvod;component/Resources/#PT Mono"/>
+    </Style>
+
+    <Style x:Key="SettingNameStyle" TargetType="{x:Type Control}">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="/Ktc_Vvod;component/Resources/#PT Mono"/>
+    </Style>
+
+
+    <Style x:Key="VirtualizingItemsControl" TargetType="ItemsControl">
+        <Setter Property="VirtualizingStackPanel.CacheLengthUnit" Value="Item"/>
+        <Setter Property="VirtualizingStackPanel.CacheLength" Value="1,1"/>
+        <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+        <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="True"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Name="PART_Panel"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border
+                        BorderThickness="{TemplateBinding Border.BorderThickness}"
+                        Padding="{TemplateBinding Control.Padding}"
+                        BorderBrush="{TemplateBinding Border.BorderBrush}"
+                        Background="{TemplateBinding Panel.Background}"
+                        SnapsToDevicePixels="True">
+                        <ScrollViewer 
+                            Name="PART_ScrollViewer"
+                            Padding="{TemplateBinding Control.Padding}"
+                            Focusable="False">
+                            <ItemsPresenter 
+                                Name="PART_Presenter"
+                                SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

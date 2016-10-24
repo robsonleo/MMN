@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="av.mmn.gui.View.Tables.UniversalTable.TableView"
+             x:Name="this"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:infoPanel="clr-namespace:av.mmn.gui.View.Tables.InfoPanel"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:universalTable="clr-namespace:av.mmn.gui.View.Tables.UniversalTable"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:customFunctions="clr-namespace:CustomFunctions;assembly=CustomReflection"
+             mc:Ignorable="d" 
+             d:Height="100" d:Width="100">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <system:Double x:Key="TableNameFontSize">14</system:Double>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Resources/Styles/ScrollStyle.xaml"/>
+                <ResourceDictionary Source="../../../Resources/Styles/TableStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="{Binding ElementName=this, Path=TableName}" FontSize="{StaticResource TableNameFontSize}" FontWeight="Bold"></Label>
+        
+        <customFunctions:CustomListView Grid.Row="1" x:Name="list" ItemsSource="{Binding ElementName=this, Path=Rows}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                  SelectedIndex="{Binding ElementName=this, Path=SelectedItemIndex, Mode=TwoWay}"
+                  SelectedItem="{Binding ElementName=this, Path=SelectedItem, Mode=OneWayToSource}" IsActivate="{Binding ElementName=this, Path=IsActivatedCommand}"
+                  AlternationCount="2" SelectionChanged="List_OnSelectionChanged">
+            <customFunctions:CustomListView.View>
+                <GridView>
+                    <universalTable:GridViewColumnDescription x:Name="cc" Header="native55555555555 header" DisplayMemberBinding="{Binding Field1}" HeaderTemplate="{StaticResource HeaderTemplate}"/>
+                </GridView>
+            </customFunctions:CustomListView.View>
+            <!--<i:Interaction.Behaviors>
+                <universalTable:HandleListViewClick Command="{Binding ElementName=this, Path=com}"></universalTable:HandleListViewClick>
+            </i:Interaction.Behaviors>-->
+            <customFunctions:CustomListView.Resources>
+                <Style TargetType="ScrollBar">
+                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                    <Setter Property="OverridesDefaultStyle" Value="true"/>
+                    <Style.Triggers>
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter Property="Template" Value="{StaticResource HorizontalScrollBarTemplate}" />
+                        </Trigger>
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter Property="Template" Value="{StaticResource VerticalScrollBarTemplate}" />
+                            <Setter Property="Margin" Value="0,0,0,0"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+              </Style>
+                <Style  TargetType="{x:Type ListViewItem}">
+                    <EventSetter Event="Selected" Handler="EventSetter_OnHandler" HandledEventsToo="False"></EventSetter>
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="{Binding ElementName=this, Path=AlternateColorRowFirst}"></Setter>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="{Binding ElementName=this, Path=AlternateColorRowSecond}"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="{Binding ElementName=this, Path=SelectedRowColor}"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="BorderBrush" Value="{Binding ElementName=this, Path=BorderRowColor}"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </customFunctions:CustomListView.Resources>
+        </customFunctions:CustomListView>
+
+        <infoPanel:InformationPanel Grid.Row="2" DataContext="{Binding ElementName=this, Mode=OneWay}" Height="15" Margin="1"></infoPanel:InformationPanel>
+        
+    </Grid>
+</UserControl>

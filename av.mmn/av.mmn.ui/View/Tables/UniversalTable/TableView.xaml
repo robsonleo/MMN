@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="av.mmn.gui.View.Tables.UniversalTable.TableView"
+             x:Name="this"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:infoPanel="clr-namespace:av.mmn.gui.View.Tables.InfoPanel"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <Grid ShowGridLines="False" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+
+        <Label Content="Lalka" Grid.Row="0"></Label>
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <Grid ShowGridLines="False" Background="White">
+                <!--<Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <GridViewHeaderRowPresenter Grid.Row="0" Columns="{Binding Columns}"></GridViewHeaderRowPresenter>
+                <GridViewRowPresenter Grid.Row="1"></GridViewRowPresenter>-->
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <GridViewColumnHeader Grid.Row="0" HorizontalAlignment="Left">
+                    <GridViewColumnHeader.Content>
+                        <ListView ItemsSource="{Binding ElementName=this, Path=Columns}" BorderBrush="Black" BorderThickness="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Black" BorderThickness="1, 0, 1, 0" Width="{Binding ElementName=this, Path=WidthBorder}" Margin="1" Height="35">
+                                        <TextBlock  Text="{Binding Path=.}" TextWrapping="Wrap" Margin="1" TextAlignment="Center" Width="{Binding ElementName=this, Path=WidthCell}"></TextBlock>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Width" Value="{Binding ElementName=this, Path=WidthColumn}" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"></StackPanel>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+
+                        </ListView>
+                    </GridViewColumnHeader.Content>
+                </GridViewColumnHeader>
+
+                <ListView ItemsSource="{Binding ElementName=this, Path=Rows}" Grid.Row="2">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ListView ItemsSource="{Binding}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="Black" BorderThickness="1, 0, 1, 0" Width="{Binding ElementName=this, Path=WidthBorder}">
+                                            <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap" Margin="2, 0, 2, 0"></TextBlock>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="Width" Value="{Binding ElementName=this, Path=WidthColumn}"></Setter>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                            </ListView>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+            </Grid>
+        </ScrollViewer>
+        <infoPanel:InformationPanel DataContext="{Binding ElementName=this}" Height="15" Grid.Row="2" Margin="1" />
+
+
+    </Grid>
+</UserControl>

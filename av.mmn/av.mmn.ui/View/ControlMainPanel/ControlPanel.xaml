@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="av.mmn.gui.View.ControlMainPanel.ControlPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:av.mmn.gui.View.ControlMainPanel"
+             xmlns:usersControls="clr-namespace:av.mmn.gui.View.CustomControls"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/MainPanelStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    
+    
+    <UserControl.DataContext>
+        <local:ControlPanelViewModel>
+            <local:ControlPanelViewModel.ButtonsCollection>
+                <usersControls:MainPanelButton Caption="Дублировать"   PictureSource="../../Resources/Images/copy.png" Style="{StaticResource ControlPanelButtonStyle}" Template="{StaticResource ControlPanelButtonTemplate}"/>
+                <usersControls:MainPanelButton Caption="Редактировать" PictureSource="../../Resources/Images/edit.png" Style="{StaticResource ControlPanelButtonStyle}" Template="{StaticResource ControlPanelButtonTemplate}"/>
+                <usersControls:MainPanelButton Caption="Удалить"      PictureSource="../../Resources/Images/trash.png" Style="{StaticResource ControlPanelButtonStyle}" Template="{StaticResource ControlPanelButtonTemplate}"/>
+                <usersControls:MainPanelButton Caption="Настройки"    PictureSource="../../Resources/Images/options.png" Style="{StaticResource ControlPanelButtonStyle}" Template="{StaticResource ControlPanelButtonTemplate}"/>
+                <usersControls:MainPanelButton Caption="Смена группы" PictureSource="../../Resources/Images/usergroup.png" Style="{StaticResource ControlPanelButtonStyle}" Template="{StaticResource ControlPanelButtonTemplate}"/>
+                <usersControls:MainPanelButton Caption="Обновить"     PictureSource="../../Resources/Images/refresh.png" Style="{StaticResource ControlPanelButtonStyle}" Template="{StaticResource ControlPanelButtonTemplate}"/>
+                <usersControls:MainPanelButton Caption="Печать"       PictureSource="../../Resources/Images/print.png" Style="{StaticResource ControlPanelButtonStyle}" Template="{StaticResource ControlPanelButtonTemplate}"/>
+            </local:ControlPanelViewModel.ButtonsCollection>
+        </local:ControlPanelViewModel>
+    </UserControl.DataContext>
+    
+   
+
+    
+    
+   <DockPanel Margin="0,0,0,0">
+        <ItemsControl ItemsSource="{Binding ButtonsCollection}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal">
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </DockPanel>
+</UserControl>
